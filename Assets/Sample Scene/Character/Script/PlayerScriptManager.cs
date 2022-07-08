@@ -10,6 +10,7 @@ public class PlayerScriptManager : MonoBehaviour
     //bool isFirst;
     CharacterLocomotion characterLandController;
     LinkToAeroPlane linkToAeroPlane;
+    LinkToGliding linkToGliding;
 
     void Start()
     {
@@ -17,6 +18,8 @@ public class PlayerScriptManager : MonoBehaviour
 
         characterLandController = GetComponent<CharacterLocomotion>();
         linkToAeroPlane = GetComponent<LinkToAeroPlane>();
+        linkToGliding = GetComponent<LinkToGliding>();
+
     }
 
     void ChangeActionMap(string actionName)
@@ -38,6 +41,15 @@ public class PlayerScriptManager : MonoBehaviour
         else
         {
             linkToAeroPlane.enabled = false;
+        }
+
+        if (actionName == ActionMapManager.ActionMap.Gliding)
+        {
+            linkToGliding.enabled = true; //
+        }
+        else
+        {
+            linkToGliding.enabled = false;
         }
     }
 }

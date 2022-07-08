@@ -1,14 +1,20 @@
 fileFormatVersion: 2
-guid: 50c7b08ebd541ec429194967b89a318b
+guid: a130e36585a67d94790810f0188c4cb6
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
   - first:
-      74: 3206289663508557752
-    second: SkyDiveBack
+      74: 2327593721878139629
+    second: SkyDownPerf
+  - first:
+      74: -3100369314251171874
+    second: Idle
   - first:
       74: 4781951162920444690
     second: Armature|ArmatureAction
+  - first:
+      74: -8945691123924629249
+    second: Armature|Idle
   - first:
       74: 8556762702971350751
     second: Armature|planeJump
@@ -21,6 +27,9 @@ ModelImporter:
   - first:
       74: -6504736073933184423
     second: Armature|SkyDiveRight
+  - first:
+      74: 1797379590308032395
+    second: Armature|SkyDownPerf
   - first:
       74: 2933333428789333063
     second: Armature|SkyDriveForward

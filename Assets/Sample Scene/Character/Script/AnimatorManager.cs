@@ -8,7 +8,8 @@ public class AnimatorManager : MonoBehaviour
     public enum AnimatorLayer
     { 
         Default,
-        Land, 
+        Land,
+        Land2,
         Aeroplane,
         Gliding,
         Swimming,

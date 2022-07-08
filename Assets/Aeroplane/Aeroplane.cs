@@ -5,6 +5,11 @@ using System;
 using TMPro;
 public class Aeroplane : MonoBehaviour
 {
+    public GameObject parachuteBag;
+    public Transform routeSource;
+    public Transform routeDestination;
+
+    public float totalDistance;
 
     public GameObject[] propellers;
     public float speed;
@@ -39,6 +44,8 @@ public class Aeroplane : MonoBehaviour
     {
         StartCoroutine(LightBlinker());
         StartCoroutine(TimerToStartPuttinPlayerOnPlane());
+        totalDistance = Vector3.Distance(routeSource.position, routeDestination.position);
+        transform.position = routeSource.position;
     }
 
     public int countdownTime;
@@ -78,29 +85,42 @@ public class Aeroplane : MonoBehaviour
         middleLight.enabled = !middleLight.enabled;
     }
 
+    public float distanceTravelled;
     void Update()
     {
         foreach(var propeller in propellers)
         {
             propeller.transform.Rotate(0, 0, 30f);
         }
-        //transform.Translate(transform.forward * speed *Time.deltaTime,Space.World);
+        distanceTravelled += speed * Time.deltaTime;
+        if(distanceTravelled < totalDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, routeDestination.position, speed * Time.deltaTime);
+        }
+        else
+        {
+            //drop all the player;
+        }
     }
 
     public void onPlayerEnter(GameObject player)
     {
         player.transform.SetParent(seat.transform);
         player.transform.localPosition = Vector3.zero;
-        //player.GetComponent<LinkToAeroPlane>().enabled = true;
+        //player.GetComponent<LinkToAeroPlane>().enabled = true; // its is enabled by scriptManager
         GameManager.instance.ChangeActionMap("Aeroplane");
-        player.GetComponent<PlayerUtils>().JoinedPlaneSetting();
+        player.GetComponent<PlayerUtils>().JoinedPlaneSetting(Instantiate(parachuteBag));
         players.Add(player);
         TotalPeople(players.Count);
     }
 
     public void onPlayerExit(GameObject player)
     {
+        player.transform.SetParent(null);
         player.transform.position = (seat.transform.position);
+        player.GetComponent<PlayerUtils>().ExitPlaneSetting();
+        player.GetComponent<PlayerUtils>().EnterGlidingSetting();
+        GameManager.instance.ChangeActionMap("Gliding");
         players.Remove(player);
         TotalPeople(players.Count);
     }

@@ -51,7 +51,7 @@ public class LinkToAeroPlane : MonoBehaviour
 
     private void Instance_totalPeople(int countPeople)
     {
-        RemainingPeople.text = "Ramaining People " + countPeople;
+        RemainingPeople.text = "Player in Cabin " + countPeople;
     }
 
 

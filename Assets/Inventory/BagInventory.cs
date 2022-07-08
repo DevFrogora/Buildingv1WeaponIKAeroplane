@@ -17,6 +17,12 @@ public class BagInventory : MonoBehaviour
     public Transform itemParent;
     public Transform activeWeaponParent;
 
+    public GameObject bag;
+    public GameObject vest;
+    public GameObject helmet;
+
+    public Transform bagParent;
+
 
     [System.Serializable]
     public class AssultSlot
@@ -137,6 +143,19 @@ public class BagInventory : MonoBehaviour
         }
     }
 
+
+    public void SetBag(GameObject _bag)
+    {
+        if (_bag.GetComponent<Bag>())
+        {
+            bag = _bag;
+            _bag.gameObject.transform.SetParent(bagParent, false);
+            _bag.gameObject.transform.localPosition = Vector3.zero;
+
+        }
+
+        // also make condition if bag is present then drop it and add it
+    }
 
 
     //public void SetSlot1ExtendedMag(GameObject mag)

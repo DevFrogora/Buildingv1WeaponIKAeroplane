@@ -9,6 +9,7 @@ public class PlayerUtils : MonoBehaviour
     CharacterAiming characterAiming;
     CinemachineCameraOffset cameraOffset;
 
+    public bool isGliding;
 
     private void Start()
     {
@@ -17,6 +18,12 @@ public class PlayerUtils : MonoBehaviour
         cameraOffset = GetComponentInChildren<CinemachineCameraOffset>();
         characterAiming = GetComponent<CharacterAiming>();
     }
+
+    public void SetDrag(float drag)
+    {
+        rigidBody.drag = drag;
+    }
+
 
     void setGravity(bool condition)
     {
@@ -53,7 +60,7 @@ public class PlayerUtils : MonoBehaviour
     }
 
     
-    public void JoinedPlaneSetting()
+    public void JoinedPlaneSetting(GameObject bag)
     {
         Coupling();
         Vector3 cameraOffsetForPlayer = new Vector3(-2.73f, 1.4f, -14.7f);
@@ -63,11 +70,51 @@ public class PlayerUtils : MonoBehaviour
         }
         characterAiming.xAxis.Value = 175f;
         characterAiming.yAxis.Value = 14.2f;
+        BagInventory.instance.SetBag(bag);
         SetCameraOffset(cameraOffsetForPlayer );
     }
 
+    
+
+    public void ExitPlaneSetting()
+    {
+        DeCoupling();
+        //Vector3 cameraOffsetForPlayer = Vector3.zero;
+        Vector3 cameraOffsetForPlayer = new Vector3(0, 0, -1.32f);
+        if (characterAiming.toggleMouseLock == false)
+        {
+            characterAiming.ToggleMouseLock();
+        }
+        SetCameraOffset(cameraOffsetForPlayer);
+        //EnterGlidingSetting();
+    }
 
 
+    public void EnterGlidingSetting()
+    {
+        DeCoupling();
+        Vector3 cameraOffsetForPlayer = new Vector3(0, 0, -2.32f);
+        if (characterAiming.toggleMouseLock == false)
+        {
+            characterAiming.ToggleMouseLock();
+        }
+        SetCameraOffset(cameraOffsetForPlayer);
+        characterAiming.lockCharacterRotationViaCamera = true;
+        isGliding = true;
+    }
+    RaycastHit hit;
+    public float DownRaycast()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down,out hit , 1000))
+        {
+           return Vector3.Distance(transform.position, hit.point);
+        }
+        return 0;
+    }
 
+    public float RigidBodySpeed()
+    {
+        return rigidBody.velocity.magnitude;
+    }
 
 }

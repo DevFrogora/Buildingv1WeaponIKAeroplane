@@ -17,6 +17,7 @@ public class CharacterAiming : MonoBehaviour
     public Cinemachine.AxisState yAxis;
 
     public bool toggleMouseLock;
+    public bool lockCharacterRotationViaCamera;
 
     private void Awake()
     {
@@ -90,14 +91,29 @@ public class CharacterAiming : MonoBehaviour
     void FixedUpdate()
     {
 
+        //if (!toggleMouseLock) return;
+        //xAxis.Update(Time.fixedDeltaTime);
+        //yAxis.Update(Time.fixedDeltaTime);
+
+        //cameraLookAt.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
+        //float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
+        //if(!alt.IsPressed())
+        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.fixedDeltaTime);
+    }
+
+    private void Update()
+    {
+
         if (!toggleMouseLock) return;
-        xAxis.Update(Time.fixedDeltaTime);
-        yAxis.Update(Time.fixedDeltaTime);
+        xAxis.Update(Time.deltaTime);
+        yAxis.Update(Time.deltaTime);
 
         cameraLookAt.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
+
+        if (lockCharacterRotationViaCamera) return;
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
-        if(!alt.IsPressed())
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.fixedDeltaTime);
+        if (!alt.IsPressed())
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
     }
 }
 

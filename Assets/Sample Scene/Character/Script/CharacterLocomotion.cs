@@ -10,7 +10,7 @@ public class CharacterLocomotion : MonoBehaviour
     public float gravity;
 
     InputActionMap landActionMap;
-    InputAction move,jump,sprint;
+    InputAction move,jump,sprint,peekLeft,peekRight;
 
     Animator animator;
     Vector2 input;
@@ -64,12 +64,15 @@ public class CharacterLocomotion : MonoBehaviour
         if(actionMap == ActionMapManager.ActionMap.Land)
         {
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land, 1);
+            animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land2, 1);
             RegisterAction();
             Debug.Log("Player Land Activate");
         }
         else
         {
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land, 0);
+            animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land2, 0);
+
             UnRegisterActionMap();
         }
     }
@@ -79,8 +82,32 @@ public class CharacterLocomotion : MonoBehaviour
         move = landActionMap["Move"];
         jump = landActionMap["Jump"];
         sprint = landActionMap["Sprint"];
+
+        peekLeft = landActionMap["Q"];
+        peekRight = landActionMap["E"];
+        peekLeft.performed += PeekLeft_performed;
+        peekRight.performed += PeekRight_performed;
         sprint.performed += sprintingPerformed;
         sprint.canceled += sprintingCanceled;
+    }
+
+    private void PeekRight_performed(InputAction.CallbackContext obj)
+    {
+        peekLeftBool = false;
+        peekRighttBool = !peekRighttBool;  //toggle
+        animator.SetBool("Q", peekLeftBool);
+        animator.SetBool("E", peekRighttBool);
+    }
+
+    bool peekLeftBool = false;
+    bool peekRighttBool = false;
+
+    private void PeekLeft_performed(InputAction.CallbackContext obj)
+    {
+        peekRighttBool = false;
+        peekLeftBool = !peekLeftBool;  //toggle
+        animator.SetBool("E", peekRighttBool);
+        animator.SetBool("Q", peekLeftBool);
     }
 
     bool isSprinting;

@@ -51,6 +51,9 @@ public class PickerItemUI : MonoBehaviour
         else if (itemPrefab.GetComponent<RedDotSight>())
         {
             BagInventory.instance.AddInMixItem(itemPrefab);
+        }else if(itemPrefab.GetComponent<Bag>())
+        {
+            BagInventory.instance.SetBag(itemPrefab);
         }
 
     }
