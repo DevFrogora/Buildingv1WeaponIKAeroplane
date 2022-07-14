@@ -6,8 +6,8 @@ using TMPro;
 public class Aeroplane : MonoBehaviour
 {
     public GameObject parachuteBag;
-    public Transform routeSource;
-    public Transform routeDestination;
+    public GameObject routeSource;
+    public GameObject routeDestination;
 
     public float totalDistance;
 
@@ -40,12 +40,34 @@ public class Aeroplane : MonoBehaviour
         countDownCounter?.Invoke(count);
     }
 
+    Vector3 routeSourceEarly;
+    Vector3 routeDestinationEarly;
+    public float farDistance;
     private void Start()
     {
         StartCoroutine(LightBlinker());
         StartCoroutine(TimerToStartPuttinPlayerOnPlane());
-        totalDistance = Vector3.Distance(routeSource.position, routeDestination.position);
-        transform.position = routeSource.position;
+
+        routeSourceEarly = routeSource.transform.position - (Vector3.forward *farDistance);
+        routeDestinationEarly = routeDestination.transform.position + Vector3.forward * farDistance;
+        //totalDistance = Vector3.Distance(routeSource.position, routeDestination.position);
+        totalDistance = Vector3.Distance(routeSourceEarly, routeDestinationEarly);
+        PathOnWorldSpace();
+        transform.position = routeSourceEarly;
+    }
+    public GameObject aeroPath;
+
+    void PathOnWorldSpace()
+    {
+        float pathLength = Vector3.Distance(routeSource.transform.position, routeDestination.transform.position);
+        Debug.Log(pathLength);
+        float pathWide = 30;
+        routeSource.transform.SetParent(null);
+        routeDestination.transform.SetParent(null);
+        aeroPath.transform.SetParent(null);
+        aeroPath.transform.localScale= new Vector3(pathWide,pathLength,1);
+        aeroPath.transform.position = new Vector3(transform.position.x, transform.position.y, -(0.23f * pathLength));
+        
     }
 
     public int countdownTime;
@@ -95,7 +117,7 @@ public class Aeroplane : MonoBehaviour
         distanceTravelled += speed * Time.deltaTime;
         if(distanceTravelled < totalDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, routeDestination.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, routeDestinationEarly, speed * Time.deltaTime);
         }
         else
         {

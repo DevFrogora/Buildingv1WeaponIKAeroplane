@@ -6,6 +6,9 @@ TagManager:
   tags:
   - wall
   - stair
+  - Buildings
+  - StateRoad
+  - CityRoad
   layers:
   - Default
   - TransparentFX
@@ -20,8 +23,8 @@ TagManager:
   - Ammo
   - grab
   - Ground
-  - 
-  - 
+  - Minimap
+  - Worldmap
   - 
   - 
   - 
