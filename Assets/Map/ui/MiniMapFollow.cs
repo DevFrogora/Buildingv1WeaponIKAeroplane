@@ -11,11 +11,21 @@ public class MiniMapFollow : MonoBehaviour
     private Transform PlayerParent;
 
     public GameObject Marker;
-
+    public int id;
 	// Use this for initialization
 	void Start ()
 	{
-		player = GameObject.FindGameObjectWithTag ("Player");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach( var tempplayer in players)
+        {
+            int tempId = tempplayer.GetComponent<PlayerDetails>().id;
+            if ( tempId == id)
+            {
+                Debug.Log(tempId);
+                player = tempplayer;
+            }
+        }
         transform.position = new Vector3(player.transform.position.x, MiniMapHeight, player.transform.position.z);
         origParent = transform.parent;
         PlayerParent = player.transform;

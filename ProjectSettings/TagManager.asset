@@ -23,12 +23,12 @@ TagManager:
   - Ammo
   - grab
   - Ground
-  - Minimap
-  - Worldmap
-  - 
-  - 
-  - 
-  - 
+  - locationIcon
+  - WorldmaprIcon
+  - PlayerIcon
+  - AeroplaneIcon
+  - footPrintIcon
+  - Enemy
   - 
   - 
   - 
