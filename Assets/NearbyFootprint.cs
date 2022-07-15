@@ -62,7 +62,7 @@ public class NearbyFootprint : MonoBehaviour
     {
         OutputVisibleRenderers(playerFootPrintDetails);
     }
-
+    public float maxDistanceRange;
     void OutputVisibleRenderers(List<PlayerFootPrintDetail> playerFootPrints)
     {
         foreach (var playerFootPrint in playerFootPrints)
@@ -76,12 +76,12 @@ public class NearbyFootprint : MonoBehaviour
                     {
                         float dist = Vector3.Distance(MyPlayer.transform.position, playerFootPrint.player.transform.position);
                         //Debug.Log(dist);
-                        if (dist < 10f)
+                        if (dist < maxDistanceRange)
                         {
                             if (!playerFootPrint.footPrint.activeInHierarchy)
                             {
                                 playerFootPrint.footPrint.SetActive(true);
-                                playerFootPrint.footPrintScript.CallWhenGameobjectaActive(playerFootPrint.player.transform);
+                                playerFootPrint.footPrintScript.CallWhenGameobjectaActive(playerFootPrint.player.transform,dist,maxDistanceRange);
                             }
                         }
                         
