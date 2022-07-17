@@ -8,4 +8,12 @@ public class PlayerDetails : MonoBehaviour
     public string playerName = "ram";
 
     public bool iswalking;
+
+    public GameObject player;
+
+
+    private void Start()
+    {
+        player = gameObject;
+    }
 }
