@@ -17,10 +17,23 @@ public class MapMarker : MonoBehaviour, IPointerClickHandler
     TextMeshProUGUI locationDistanceText;
 
     private GameObject player;
+    public int id;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var tempplayer in players)
+        {
+            int tempId = tempplayer.GetComponent<PlayerDetails>().id;
+            if (tempId == id)
+            {
+                Debug.Log(tempId);
+                player = tempplayer;
+            }
+        }
+
         //MapRawImage = MapRawImage.GetComponent<RawImage>();
         locationLineRender = markerLocation.GetComponent<LineRenderer>();
         locationDistanceText = markerLocation.GetComponentInChildren<TextMeshProUGUI>();

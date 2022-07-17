@@ -27,7 +27,7 @@ public class DamageCircle : MonoBehaviour
     private Vector3 previousCirclePos;
     private Vector3 previousCircleSize;
 
-
+    public float zoneSize= 2500;
     private void Awake()
     {
         instance = this;
@@ -38,14 +38,14 @@ public class DamageCircle : MonoBehaviour
         leftTransform = transform.Find("left");
         rightTransform = transform.Find("right");
 
-        SetCircleSize(Vector3.up * 20,new Vector3(2500, 2500,1));
+        SetCircleSize(Vector3.up * 20,new Vector3(zoneSize, zoneSize, 1));
         previousCirclePos = Vector3.up * 20;
         previousCircleSize = new Vector3(2500, 2500, 1);
 
         //targetCircleSize = new Vector3(200, 200, 1);
         //targetCirclePosition = new Vector3(1000, 20, 0);
-
-        SetTargetCircle(new Vector3(200, 20, 1), new Vector3(2000, 2000, 0),5f);  // after 5 second it will shrink
+        zoneSize = zoneSize / 2;
+        SetTargetCircle(new Vector3(200, 20, 1), new Vector3(zoneSize, zoneSize, 0),5f);  // after 5 second it will shrink
     }
     public float distanceOfTarget;
 
@@ -72,10 +72,23 @@ public class DamageCircle : MonoBehaviour
             {
                 previousCirclePos = circlePosition;
                 previousCircleSize = circleSize;
-                SetTargetCircle(circlePosition, circleSize - new Vector3(200, 200, 0), 5);
+                //SetTargetCircle(circlePosition, circleSize - new Vector3(200, 200, 0), 5);
+                GenerateTargetCircle();
             }
         }
 
+    }
+
+    private void GenerateTargetCircle()
+    {
+        zoneSize = zoneSize / 2;
+        float shrinkAmount = zoneSize;
+        Vector3 generatedTargetCircleSize = circleSize - new Vector3(shrinkAmount, shrinkAmount);
+        Vector3 generatedTargetCirclePosition = circlePosition + new Vector3(Random.Range(-shrinkAmount, shrinkAmount)
+            , 20, Random.Range(-shrinkAmount, shrinkAmount)) ;
+
+        shrinkTimer = 5;
+        SetTargetCircle(generatedTargetCirclePosition, generatedTargetCircleSize ,shrinkTimer);
     }
 
 
