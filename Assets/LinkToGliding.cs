@@ -42,7 +42,11 @@ public class LinkToGliding : MonoBehaviour
         else
         {
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Gliding, 0);
-            glidingUiControl.enabled = false;
+            if(glidingUiControl != null) // this check is not needed , it is just because some Ui is disable for testing 
+            {
+                glidingUiControl.enabled = false;
+
+            }
             UnRegisterActionMap();
         }
     }

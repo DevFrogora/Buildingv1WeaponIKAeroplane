@@ -9,6 +9,7 @@ TagManager:
   - Buildings
   - StateRoad
   - CityRoad
+  - Water
   layers:
   - Default
   - TransparentFX

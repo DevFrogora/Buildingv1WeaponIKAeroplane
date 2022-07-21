@@ -133,4 +133,14 @@ public class PlayerUtils : MonoBehaviour
     {
         return rigidBody.velocity.magnitude;
     }
+
+    public void EnterSwimming()
+    {
+        characterAiming.lockCharacterRotationViaCamera = true;
+    }
+
+    public void ExitSwimming()
+    {
+        characterAiming.lockCharacterRotationViaCamera = false;
+    }
 }

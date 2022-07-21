@@ -11,6 +11,7 @@ public class ActionMapManager : MonoBehaviour
         public static string Aeroplane = "Aeroplane";
         public static string Player = "Player";
         public static string Gliding = "Gliding";
+        public static string Swimming = "Swimming";
 
     }
 

@@ -18,7 +18,7 @@ public class GroundHitter : MonoBehaviour
     //}
 
     public float distance = 100f;
-    public Vector3? HitGround()
+    public RaycastHit HitGround()
     {
         RaycastHit hit;
 
@@ -27,8 +27,8 @@ public class GroundHitter : MonoBehaviour
             /*
              * Set the target location to the location of the hit.
              */
-            return hit.point;
+            return hit;
         }
-        return null;
+        return hit;
     }
 }

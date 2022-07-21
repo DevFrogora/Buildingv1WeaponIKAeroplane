@@ -642,16 +642,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Look",
-                    "type": "Button",
-                    "id": "7be32aa7-de8c-4146-b1a5-a4f2731e319d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwimUp",
+                    "name": "Space",
                     "type": "Button",
                     "id": "ee0c4d32-f85c-4e88-92b0-6af26524b371",
                     "expectedControlType": "Button",
@@ -660,7 +651,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SwimDown",
+                    "name": "Shift",
                     "type": "Button",
                     "id": "37220e2c-91ba-4a1e-a77f-f86e5804141c",
                     "expectedControlType": "Button",
@@ -727,23 +718,12 @@
                 },
                 {
                     "name": "",
-                    "id": "de2aab98-90f5-4aa3-838f-d422a8501e48",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a7002326-530d-490d-9ec5-bfabb29ab4c2",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwimUp",
+                    "action": "Space",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -754,7 +734,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwimDown",
+                    "action": "Shift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

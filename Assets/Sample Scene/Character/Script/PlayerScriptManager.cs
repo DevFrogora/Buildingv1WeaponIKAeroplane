@@ -11,6 +11,7 @@ public class PlayerScriptManager : MonoBehaviour
     CharacterLocomotion characterLandController;
     LinkToAeroPlane linkToAeroPlane;
     LinkToGliding linkToGliding;
+    Swimming swimming;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class PlayerScriptManager : MonoBehaviour
         characterLandController = GetComponent<CharacterLocomotion>();
         linkToAeroPlane = GetComponent<LinkToAeroPlane>();
         linkToGliding = GetComponent<LinkToGliding>();
+        swimming = GetComponent<Swimming>();
 
     }
 
@@ -50,6 +52,15 @@ public class PlayerScriptManager : MonoBehaviour
         else
         {
             linkToGliding.enabled = false;
+        }
+
+        if (actionName == ActionMapManager.ActionMap.Swimming)
+        {
+            swimming.enabled = true; //
+        }
+        else
+        {
+            swimming.enabled = false;
         }
     }
 }

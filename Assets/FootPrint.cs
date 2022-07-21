@@ -22,7 +22,7 @@ public class FootPrint : MonoBehaviour
     IEnumerator FootPrintVisible(float distance, float maxDistanceRange)
     {
         float alphaValue = Mathf.InverseLerp(maxDistanceRange, 0, distance);
-        Debug.Log(alphaValue);
+        //Debug.Log(alphaValue);
         spriteRenderer.color = new Color(1f, 0f, 0f, alphaValue);
         Debug.Log(" is detected!");
         yield return new WaitForSeconds(2);

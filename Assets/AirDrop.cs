@@ -73,7 +73,17 @@ public class AirDrop : MonoBehaviour
 
     IEnumerator SmokeTimeout()
     {
-        yield return new WaitForSeconds(15);
+        Smoke.gameObject.transform.LookAt(Vector3.up);
+        yield return new WaitForSeconds(1);
+        Smoke.gameObject.transform.LookAt(Vector3.up);
+        yield return new WaitForSeconds(1);
+        Smoke.gameObject.transform.LookAt(Vector3.up);
+        yield return new WaitForSeconds(1);
+        Smoke.gameObject.transform.LookAt(Vector3.up);
+        yield return new WaitForSeconds(1);
+        Smoke.gameObject.transform.LookAt(Vector3.up);
+        yield return new WaitForSeconds(12);
+        //Smoke.gameObject.transform.LookAt(Vector3.up);
         Destroy(airDropRb);
         Smoke.gameObject.SetActive(false);
     }

@@ -17,7 +17,8 @@ public class DropzoneDraggableItem : MonoBehaviour, IDropHandler
             {
                 GameObject item = (BagInventory.instance.slot1.assultPrefab);
                 item.transform.SetParent(transform.root.parent);
-                item.transform.position =(Vector3) GroundHitter.instance.HitGround();
+                RaycastHit hitInfo = GroundHitter.instance.HitGround();
+                item.transform.position =(Vector3) hitInfo.point;
                 item.transform.rotation = Quaternion.identity;
 
                 BagInventory.instance.SetSlot1Assult(null);
