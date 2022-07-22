@@ -143,4 +143,27 @@ public class PlayerUtils : MonoBehaviour
     {
         characterAiming.lockCharacterRotationViaCamera = false;
     }
+
+    public void EnterSleeping()
+    {
+        characterAiming.lockCharacterRotationViaCamera = true;
+
+        Vector3 cameraOffsetForPlayer = new Vector3(0, 0.7f, -3f);
+        if (characterAiming.toggleMouseLock == false)
+        {
+            characterAiming.ToggleMouseLock();
+        }
+        SetCameraOffset(cameraOffsetForPlayer);
+    }
+
+    public void ExitSleeping()
+    {
+        characterAiming.lockCharacterRotationViaCamera = false;
+        Vector3 cameraOffsetForPlayer = Vector3.zero;
+        if (characterAiming.toggleMouseLock == false)
+        {
+            characterAiming.ToggleMouseLock();
+        }
+        SetCameraOffset(cameraOffsetForPlayer);
+    }
 }

@@ -38,7 +38,6 @@ public class Swimming : MonoBehaviour
     {
         if (actionMap == ActionMapManager.ActionMap.Swimming)
         {
-            originalConstraint = playerRb.constraints;
             playerRb.constraints = RigidbodyConstraints.FreezePositionY;
             playerRb.constraints = ~RigidbodyConstraints.FreezeRotation;
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Swimming, 1);
@@ -58,6 +57,7 @@ public class Swimming : MonoBehaviour
     private void UnRegisterActionMap()
     {
         swimActionMap.Disable();
+        playerRb.constraints = originalConstraint;
     }
 
     private void RegisterAction()

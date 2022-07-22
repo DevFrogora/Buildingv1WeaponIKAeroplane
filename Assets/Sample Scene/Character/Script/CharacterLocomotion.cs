@@ -10,7 +10,8 @@ public class CharacterLocomotion : MonoBehaviour
     public float gravity;
 
     InputActionMap landActionMap;
-    InputAction move,jump,sprint,peekLeft,peekRight;
+    InputAction move,jump,sprint,peekLeft,peekRight,alt;
+    InputAction crouch, sleep;
 
     Animator animator;
     Vector2 input;
@@ -39,6 +40,7 @@ public class CharacterLocomotion : MonoBehaviour
 
 
     CharacterAiming characterAiming;
+    PlayerUtils playerUtils;
 
 
     private void Awake()
@@ -51,9 +53,10 @@ public class CharacterLocomotion : MonoBehaviour
 
     void Start()
     {
+        playerUtils = GetComponent<PlayerUtils>();
         animator = GetComponent<Animator>();
         landActionMap = ActionMapManager.playerInput.actions.FindActionMap(ActionMapManager.ActionMap.Land);
-
+        originalConstraint = rigidBody.constraints;
         GameManager.instance.changeActionMap += ChangeActionMap;
         RegisterAction();
         
@@ -63,16 +66,25 @@ public class CharacterLocomotion : MonoBehaviour
     {
         if(actionMap == ActionMapManager.ActionMap.Land)
         {
+            sleepToggle = false;
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land, 1);
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land2, 1);
+            animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Crouching, 1);
+            animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Sleeping, 1);
+            //originalConstraint = rigidBody.constraints;
             RegisterAction();
+            animator.SetBool("Z", false);
             Debug.Log("Player Land Activate");
         }
         else
         {
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land, 0);
             animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Land2, 0);
-
+            animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Crouching, 0);
+            animator.SetLayerWeight((int)AnimatorManager.AnimatorLayer.Sleeping, 0);
+            animator.SetBool("Z", false);
+            rigidBody.constraints = originalConstraint;
+            sleepToggle = false;
             UnRegisterActionMap();
         }
     }
@@ -85,10 +97,45 @@ public class CharacterLocomotion : MonoBehaviour
 
         peekLeft = landActionMap["Q"];
         peekRight = landActionMap["E"];
+        alt = landActionMap["Alt"];
+        crouch = landActionMap["C"];
+        sleep = landActionMap["Z"];
+
         peekLeft.performed += PeekLeft_performed;
         peekRight.performed += PeekRight_performed;
         sprint.performed += sprintingPerformed;
         sprint.canceled += sprintingCanceled;
+
+        crouch.performed += Crouch_performed;
+        sleep.performed += Sleep_performed;
+    }
+
+    bool sleepToggle;
+
+    RigidbodyConstraints originalConstraint;
+    private void Sleep_performed(InputAction.CallbackContext obj)
+    {
+        sleepToggle = !sleepToggle;
+        animator.SetBool("Z", sleepToggle);
+        if(sleepToggle)
+        {
+            rigidBody.constraints =  RigidbodyConstraints.None;
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            playerUtils.EnterSleeping();
+
+        }
+        else
+        {
+            playerUtils.ExitSleeping();
+            rigidBody.constraints = originalConstraint;
+        }
+    }
+
+    bool crouchToggle;
+    private void Crouch_performed(InputAction.CallbackContext obj)
+    {
+        crouchToggle = !crouchToggle;
+        animator.SetBool("C", crouchToggle);
     }
 
     private void PeekRight_performed(InputAction.CallbackContext obj)
@@ -129,6 +176,10 @@ public class CharacterLocomotion : MonoBehaviour
     }
     #endregion
 
+
+
+    float pitch;
+    float roll;
     private void Update()
     {
         input = move.ReadValue<Vector2>();
@@ -141,11 +192,56 @@ public class CharacterLocomotion : MonoBehaviour
             JumpDecider();
         }
 
+        if(crouchToggle)
+        {
+            if(input.x != 0)
+            {
+                if(input.x > 0)
+                {
+                    //right
+                    animator.SetBool("CR", true);
+                    animator.SetBool("CL", false);
+                }
+                else
+                {
+                    animator.SetBool("CL", true);
+                    animator.SetBool("CR", false);
+                    // left
+                }
+            }
+            else
+            {
+                animator.SetBool("CL", false);
+                animator.SetBool("CR", false);
+            }
+        }
+
+        if(sleepToggle)
+        {
+            pitch = 90;
+            yaw = Camera.main.transform.rotation.eulerAngles.y;
+            roll = 0;
+
+        }
+        else
+        {
+            pitch = 0;
+        }
+
+
+
+
         UpdateSprinting();
 
 
         animatorStateHandler();
     }
+    public float speed= 2;
+     Vector3 moveForwardZ;
+     Vector3 moveRightX;
+
+    //float turnSpeed = 1;
+    float yaw;
 
     void UpdateSprinting()
     {
@@ -275,14 +371,63 @@ public class CharacterLocomotion : MonoBehaviour
         }
         else
         { //on ground
-
+            if(!sleepToggle)
+            {
                 Move(new Vector3(rootMotion.x, 0, rootMotion.z));
                 rootMotion = Vector3.zero;
 
                 stepClimb();
+            }
+
+        }
+
+
+        if (sleepToggle)
+        {
+            if (input.y > 0)
+            {
+                moveForwardZ = transform.up * speed * Time.fixedDeltaTime;
+            }
+            if (input.y == 0)
+            {
+                moveForwardZ = Vector3.zero;
+            }
+            if (input.y < 0)
+            {
+                moveForwardZ = (-transform.up) * speed * Time.fixedDeltaTime;
+            }
+
+            if (input.x > 0)
+            {
+                moveRightX = transform.right * speed * Time.fixedDeltaTime;
+            }
+
+            if (input.x == 0)
+            {
+                moveRightX = Vector3.zero;
+            }
+
+            if (input.x < 0)
+            {
+                moveRightX = (-transform.right) * speed * Time.fixedDeltaTime;
+            }
+
+            animator.SetFloat(_animInputX, input.x);
+            animator.SetFloat(_animInputY, input.y);
+
+
+            rigidBody.MovePosition(transform.position + moveForwardZ + moveRightX);
+
+            if (!alt.IsPressed())
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(pitch, yaw, roll), 5 * Time.fixedDeltaTime);
+
         }
 
     }
+
+    int _animInputX = Animator.StringToHash("InputX");
+    int _animInputY = Animator.StringToHash("InputY");
+
 
     IEnumerator GroundCheckForJump()
     {

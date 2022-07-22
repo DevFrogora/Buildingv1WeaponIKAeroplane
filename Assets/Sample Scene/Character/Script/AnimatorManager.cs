@@ -10,6 +10,8 @@ public class AnimatorManager : MonoBehaviour
         Default,
         Land,
         Land2,
+        Crouching,
+        Sleeping,
         Aeroplane,
         Gliding,
         Swimming,
