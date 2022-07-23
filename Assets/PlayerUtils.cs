@@ -11,12 +11,34 @@ public class PlayerUtils : MonoBehaviour
 
     public bool isGliding;
 
+    Vector3 _dCCenter;
+    float _dCRadius;
+    float _dCHeight;
+
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
         collider = GetComponent<CapsuleCollider>();
         cameraOffset = GetComponentInChildren<CinemachineCameraOffset>();
         characterAiming = GetComponent<CharacterAiming>();
+
+        _dCCenter = collider.center;
+        _dCHeight = collider.height;
+        _dCRadius = collider.radius;
+    }
+
+    void SetColliderSize(Vector3 center,float radius, float height)
+    {
+        collider.height = height;
+        collider.radius = radius;
+        collider.center = center;
+    }
+
+    void ResetColliderSize()
+    {
+        collider.height = _dCHeight;
+        collider.radius = _dCRadius;
+        collider.center = _dCCenter;
     }
 
     public void SetDrag(float drag)
@@ -153,6 +175,8 @@ public class PlayerUtils : MonoBehaviour
         {
             characterAiming.ToggleMouseLock();
         }
+        Vector3 _colliderCenter = new Vector3(0, 0.9f, -0.2f);
+        SetColliderSize(_colliderCenter, _dCRadius, _dCHeight);
         SetCameraOffset(cameraOffsetForPlayer);
     }
 
@@ -165,5 +189,6 @@ public class PlayerUtils : MonoBehaviour
             characterAiming.ToggleMouseLock();
         }
         SetCameraOffset(cameraOffsetForPlayer);
+        ResetColliderSize();
     }
 }

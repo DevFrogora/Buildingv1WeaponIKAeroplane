@@ -10,14 +10,16 @@ public class BotMovement : MonoBehaviour
     private static int ANIMATOR_PARAM_WALK_SPEED =Animator.StringToHash("WalkSpeed");
     Vector3 target;
 
-    public float minXPos;
-    public float maxXPos;
+     float minXPos;
+     float maxXPos;
 
-    public float minYPos;
-    public float maxYPos;
+     float minYPos;
+     float maxYPos;
 
-    public float minZPos;
-    public float maxZPos;
+     float minZPos;
+     float maxZPos;
+
+    public GameObject platform;
 
     private void Start()
     {
@@ -25,6 +27,16 @@ public class BotMovement : MonoBehaviour
         playerDetails = GetComponent<PlayerDetails>();
         agent = GetComponent<NavMeshAgent>();
         StartCoroutine(Starting(5));
+
+        minXPos = platform.transform.position.x - (platform.transform.localScale.x / 2 - 1);
+        maxXPos = platform.transform.position.x + (platform.transform.localScale.x / 2 - 1);
+
+        minYPos = platform.transform.position.y + (platform.transform.localScale.y / 2);
+        maxYPos = platform.transform.position.y + (platform.transform.localScale.y / 2);
+
+        minZPos = platform.transform.position.z - (platform.transform.localScale.z / 2 - 1);
+        maxZPos = platform.transform.position.z + (platform.transform.localScale.z / 2 - 1);
+
     }
     IEnumerator Starting(int second)
     {
